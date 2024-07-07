@@ -1,7 +1,7 @@
 #include<stdio.h>
 void main()
 {
-inti, j, k, f, pf=0, count=0, rs[25], m[10], n;
+int i, j, k, f, pf=0, count=0, rs[25], m[10], n;
 printf("\n Enter the length of reference string -- ");
 scanf("%d",&n);
 printf("\n Enter the reference string -- ");
@@ -22,7 +22,7 @@ break;
 if(k==f)
 {
 m[count++]=rs[i];
-pf++
+pf++;
 }
 for(j=0;j<f;j++)
 printf("\t%d",m[j]);
