@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int mutex = 1, n, empty, full = 0, item;
+int buffer[20];
+int in = 0, out = 0;
+
+void wait(int *s) {
+    while (*s <= 0);
+    (*s)--;
+}
+
+void signal(int *s) {
+    (*s)++;
+}
+
+void producer() {
+    while (in < n) {
+        wait(&empty);
+        wait(&mutex);
+        printf("\nEnter an item: ");
+        scanf("%d", &item);
+        buffer[in] = item;
+        in++;
+        signal(&mutex);
+        signal(&full);
+    }
+}
+
+void consumer() {
+    while (out < n) {
+        wait(&full);
+        wait(&mutex);
+        item = buffer[out];
+        printf("\nConsumed item = %d", item);
+        out++;
+        signal(&mutex);
+        signal(&empty);
+    }
+}
+
+int main() {
+    printf("\nEnter the value of n: ");
+    scanf("%d", &n);
+    empty = n;
+    producer();
+    consumer();
+    return 0;
+}
