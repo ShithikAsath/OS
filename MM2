@@ -1,0 +1,82 @@
+#include <stdio.h>
+
+struct partition {
+    int size;
+    int job;
+    int job_size;
+    int pnum;
+};
+
+// Function to sort partitions based on size
+void sort(int num, struct partition pr[]) {
+    int i, j, tem;
+    for (i = 0; i < num; i++) {
+        for (j = i + 1; j < num; j++) {
+            if (pr[j].size < pr[i].size) {
+                // Swap sizes
+                tem = pr[i].size;
+                pr[i].size = pr[j].size;
+                pr[j].size = tem;
+                
+                // Swap partition numbers
+                tem = pr[i].pnum;
+                pr[i].pnum = pr[j].pnum;
+                pr[j].pnum = tem;
+            }
+        }
+    }
+}
+
+int main() {
+    int i, j, n, k = -1, s[10], temp, job[10];
+    struct partition pr[10];
+
+    // Input partition sizes
+    for (i = 0; i < 5; i++) {
+        printf("\nEnter the partition size of process %d:\t", i);
+        scanf("%d", &n);
+        pr[i].size = n;
+        pr[i].job = 0;
+        pr[i].job_size = 0;
+        pr[i].pnum = i;
+        printf("\n");
+    }
+
+    // Input jobs and their sizes
+    for (i = 0; i < 4; i++) {
+        printf("\nEnter the job: ");
+        scanf("%d", &job[i]);
+        printf("Enter the job size: ");
+        scanf("%d", &s[i]);
+    }
+
+    // Allocate jobs to partitions
+    for (i = 0; i < 4; i++) {
+        k = -1;
+        sort(5, pr);  // Sort partitions by size
+        for (j = 0; j < 5; j++) {
+            if (pr[j].size >= s[i]) {
+                temp = pr[j].size - s[i];
+                k = j;
+                break;
+            }
+        }
+
+        if (k != -1) {
+            pr[k].job = job[i];
+            pr[k].job_size = s[i];
+            pr[k].size = temp;
+            printf("\nPartition %d fits the job: %d", pr[k].pnum, job[i]);
+        } else {
+            printf("\nThe job %d has not been allocated", job[i]);
+        }
+    }
+
+    // Output the partition sizes after allocation
+    printf("\nPartition after allocation:\n");
+    for (i = 0; i < 5; i++) {
+        printf("%d\n", pr[i].size);
+    }
+
+    return 0;
+}
